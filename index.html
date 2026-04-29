@@ -186,6 +186,13 @@
       overflow: hidden;
     }
 
+    .card-thumb {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  display: block;
+  grid-column: 1 / -1;
+}
     .article-card::before {
       content: '';
       position: absolute;
@@ -375,20 +382,20 @@
 
         <!-- CARD 1 — replace with your real articles -->
         <a class="article-card" href="https://www.uploadvr.com/pluto-tvs-immersive-quest-app-gets-the-atmosphere-right-but-leaves-questions/" target="_blank" rel="noopener">
-          <div class="card-body">
-            <div class="card-tags">
-              <span class="tag">Review</span>
-              <span class="tag">Quest 3</span>
-            </div>
-            <p class="card-title">Pluto TV’s Immersive Quest App Gets The Atmosphere Right, But Leaves Questions</p>
-            <p class="card-preview">Pluto TV introduced a new immersive viewing app on Meta Quest. I spent some time with it to see what it actually offers, what works, and where it comes up short.</p>
-          </div>
-          <div class="card-meta">
-            UploadVR<br/>April 27, 2026
-            <span class="Media & Entertainment">→</span>
-          </div>
-        </a>
-
+  <img class="card-thumb" src="https://storage.ghost.io/c/2a/2f/2a2f38f0-4b71-407a-9c7e-18a9e2541980/content/images/size/w1024/format/webp/2026/04/Pluto-cover.png" alt="Pluto TV article thumbnail"/>
+  <div class="card-body">
+    <div class="card-tags">
+      <span class="tag">Feature</span>
+      <span class="tag">Meta Quest</span>
+    </div>
+    <p class="card-title">Pluto TV's Immersive Quest App Gets The Atmosphere Right, But Leaves Questions</p>
+    <p class="card-preview">Pluto TV introduced a new immersive viewing app on Meta Quest. I spent some time with it to see what it actually offers, what works, and where it comes up short.</p>
+  </div>
+  <div class="card-meta">
+    UploadVR<br/>Apr 2026
+    <span class="card-arrow">→</span>
+  </div>
+</a>
         <!-- CARD 2 -->
         <a class="article-card" href="https://uploadvr.com/your-article-url-here" target="_blank" rel="noopener">
           <div class="card-body">
