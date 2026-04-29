@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Your Name — VR Journalist</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Barlow:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a0a0f;
+      --surface: #111118;
+      --surface-hover: #16161f;
+      --border: #1e1e2e;
+      --accent: #00d4ff;
+      --accent2: #7c3aed;
+      --text: #e8e8f0;
+      --muted: #888899;
+      --tag-bg: #0f1a2e;
+      --tag-text: #00a8cc;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Barlow', sans-serif;
+      font-weight: 300;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* Grid noise texture overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,212,255,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,212,255,0.02) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── HEADER ── */
+    header {
+      position: relative;
+      z-index: 10;
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+      backdrop-filter: blur(12px);
+      background: rgba(10,10,15,0.85);
+      position: sticky;
+      top: 0;
+    }
+
+    .logo {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.85rem;
+      color: var(--accent);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+    }
+
+    nav a {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      margin-left: 2rem;
+      transition: color 0.2s;
+    }
+    nav a:hover { color: var(--accent); }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      z-index: 1;
+      padding: 7rem 2rem 5rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .hero-eyebrow {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .hero-eyebrow::before {
+      content: '';
+      display: inline-block;
+      width: 28px;
+      height: 1px;
+      background: var(--accent);
+    }
+
+    .hero h1 {
+      font-family: 'Barlow', sans-serif;
+      font-size: clamp(2.8rem, 7vw, 5.5rem);
+      font-weight: 700;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero h1 span {
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(0,212,255,0.5);
+    }
+
+    .hero-bio {
+      font-size: 1.1rem;
+      color: var(--muted);
+      max-width: 560px;
+      line-height: 1.8;
+      font-weight: 300;
+    }
+
+    .hero-bio strong {
+      color: var(--text);
+      font-weight: 400;
+    }
+
+    /* ── SECTION ── */
+    .section {
+      position: relative;
+      z-index: 1;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 2rem 6rem;
+    }
+
+    .section-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 2rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ── ARTICLE CARDS ── */
+    .articles {
+      display: grid;
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+
+    .article-card {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 1.5rem;
+      align-items: start;
+      background: var(--surface);
+      padding: 1.75rem 2rem;
+      text-decoration: none;
+      color: inherit;
+      transition: background 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .article-card::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: var(--accent);
+      transform: scaleY(0);
+      transform-origin: bottom;
+      transition: transform 0.25s ease;
+    }
+
+    .article-card:hover {
+      background: var(--surface-hover);
+    }
+    .article-card:hover::before {
+      transform: scaleY(1);
+    }
+
+    .card-body { min-width: 0; }
+
+    .card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .tag {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.55rem;
+      background: var(--tag-bg);
+      color: var(--tag-text);
+      border: 1px solid rgba(0,168,204,0.2);
+    }
+
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      line-height: 1.35;
+      margin-bottom: 0.5rem;
+      color: var(--text);
+      transition: color 0.2s;
+    }
+    .article-card:hover .card-title { color: var(--accent); }
+
+    .card-preview {
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.7;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .card-meta {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--muted);
+      white-space: nowrap;
+      padding-top: 0.2rem;
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    .card-arrow {
+      margin-top: 0.4rem;
+      color: var(--accent);
+      opacity: 0;
+      transition: opacity 0.2s, transform 0.2s;
+      display: block;
+      text-align: right;
+      font-size: 1.1rem;
+    }
+    .article-card:hover .card-arrow {
+      opacity: 1;
+      transform: translateX(3px);
+    }
+
+    /* ── ABOUT ── */
+    .about-block {
+      border: 1px solid var(--border);
+      background: var(--surface);
+      padding: 2.5rem;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 2rem;
+      align-items: start;
+    }
+
+    .about-avatar {
+      width: 72px;
+      height: 72px;
+      background: linear-gradient(135deg, var(--accent2), var(--accent));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Space Mono', monospace;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: white;
+      flex-shrink: 0;
+    }
+
+    .about-text p {
+      color: var(--muted);
+      font-size: 0.95rem;
+      line-height: 1.8;
+      margin-bottom: 1rem;
+    }
+
+    .about-links {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .about-links a {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(0,212,255,0.3);
+      padding-bottom: 1px;
+      transition: border-color 0.2s;
+    }
+    .about-links a:hover { border-color: var(--accent); }
+
+    /* ── FOOTER ── */
+    footer {
+      position: relative;
+      z-index: 1;
+      border-top: 1px solid var(--border);
+      padding: 2rem;
+      text-align: center;
+    }
+    footer p {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+    footer span { color: var(--accent); }
+
+    @media (max-width: 600px) {
+      .article-card { grid-template-columns: 1fr; }
+      .card-meta { text-align: left; }
+      .about-block { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a class="logo" href="#">Your Name</a>
+    <nav>
+      <a href="#articles">Work</a>
+      <a href="#about">About</a>
+    </nav>
+  </header>
+
+  <main>
+
+    <!-- HERO -->
+    <section class="hero">
+      <p class="hero-eyebrow">VR Journalist &amp; Tech Reporter</p>
+      <h1>Covering the <span>future</span> of spatial computing</h1>
+      <p class="hero-bio">
+        Reporting on virtual reality, mixed reality, and the technologies reshaping how we experience the world.
+        Published at <strong>UploadVR</strong> and beyond.
+      </p>
+    </section>
+
+    <!-- ARTICLES -->
+    <section class="section" id="articles">
+      <p class="section-label">Selected Work</p>
+
+      <div class="articles">
+
+        <!-- CARD 1 — replace with your real articles -->
+        <a class="article-card" href="https://uploadvr.com/your-article-url-here" target="_blank" rel="noopener">
+          <div class="card-body">
+            <div class="card-tags">
+              <span class="tag">Review</span>
+              <span class="tag">Quest 3</span>
+            </div>
+            <p class="card-title">Your Article Headline Goes Right Here</p>
+            <p class="card-preview">A short preview or description of what the article is about. You can paste the first sentence or two from your piece to give readers a sense of what to expect before clicking through.</p>
+          </div>
+          <div class="card-meta">
+            UploadVR<br/>Apr 2026
+            <span class="card-arrow">→</span>
+          </div>
+        </a>
+
+        <!-- CARD 2 -->
+        <a class="article-card" href="https://uploadvr.com/your-article-url-here" target="_blank" rel="noopener">
+          <div class="card-body">
+            <div class="card-tags">
+              <span class="tag">News</span>
+              <span class="tag">Apple Vision Pro</span>
+            </div>
+            <p class="card-title">Another Article Headline Goes Here</p>
+            <p class="card-preview">Replace this with a short excerpt or summary of your article. Keep it to a sentence or two — just enough to hook the reader.</p>
+          </div>
+          <div class="card-meta">
+            UploadVR<br/>Mar 2026
+            <span class="card-arrow">→</span>
+          </div>
+        </a>
+
+        <!-- CARD 3 -->
+        <a class="article-card" href="https://uploadvr.com/your-article-url-here" target="_blank" rel="noopener">
+          <div class="card-body">
+            <div class="card-tags">
+              <span class="tag">Feature</span>
+              <span class="tag">VR Gaming</span>
+            </div>
+            <p class="card-title">A Third Article Headline Example Here</p>
+            <p class="card-preview">Two sentences of preview text about this article. This gives visitors enough context to decide if they want to click through and read the full piece.</p>
+          </div>
+          <div class="card-meta">
+            UploadVR<br/>Feb 2026
+            <span class="card-arrow">→</span>
+          </div>
+        </a>
+
+        <!-- CARD 4 — duplicate this block to add more articles -->
+        <a class="article-card" href="https://uploadvr.com/your-article-url-here" target="_blank" rel="noopener">
+          <div class="card-body">
+            <div class="card-tags">
+              <span class="tag">Interview</span>
+            </div>
+            <p class="card-title">Fourth Article Headline Example</p>
+            <p class="card-preview">Short preview text here. Replace with your actual excerpt or lede from the piece.</p>
+          </div>
+          <div class="card-meta">
+            UploadVR<br/>Jan 2026
+            <span class="card-arrow">→</span>
+          </div>
+        </a>
+
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section class="section" id="about">
+      <p class="section-label">About</p>
+      <div class="about-block">
+        <div class="about-avatar">YN</div>
+        <div class="about-text">
+          <p>Replace this with a short bio. Talk about your beat, what you cover, how long you've been reporting, and what drives your interest in VR and spatial computing. Two or three sentences is plenty.</p>
+          <p>You can also mention the outlets you've written for, any awards or notable work, or your background before journalism.</p>
+          <div class="about-links">
+            <a href="https://uploadvr.com" target="_blank">UploadVR Profile</a>
+            <a href="mailto:you@email.com">Email</a>
+            <a href="https://twitter.com/yourhandle" target="_blank">Twitter / X</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>© 2026 <span>Your Name</span> — VR Journalist</p>
+  </footer>
+
+</body>
+</html>
