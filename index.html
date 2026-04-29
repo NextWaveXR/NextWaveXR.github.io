@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>CRAIG STORM — VR Journalist</title>
+  <title>Craig Storm — VR Journalist</title>
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Barlow:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&display=swap" rel="stylesheet"/>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -32,7 +32,6 @@
       min-height: 100vh;
     }
 
-    /* Grid noise texture overlay */
     body::before {
       content: '';
       position: fixed;
@@ -47,7 +46,6 @@
 
     /* ── HEADER ── */
     header {
-      position: relative;
       z-index: 10;
       border-bottom: 1px solid var(--border);
       padding: 0 2rem;
@@ -127,14 +125,34 @@
     .hero-bio {
       font-size: 1.1rem;
       color: var(--muted);
-      max-width: 560px;
+      max-width: 580px;
       line-height: 1.8;
       font-weight: 300;
     }
 
-    .hero-bio strong {
-      color: var(--text);
-      font-weight: 400;
+    .hero-bio strong { color: var(--text); font-weight: 400; }
+
+    .hero-socials {
+      display: flex;
+      gap: 1.25rem;
+      margin-top: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .hero-socials a {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      border: 1px solid var(--border);
+      padding: 0.45rem 0.9rem;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .hero-socials a:hover {
+      color: var(--accent);
+      border-color: var(--accent);
     }
 
     /* ── SECTION ── */
@@ -164,113 +182,171 @@
       background: var(--border);
     }
 
-    /* ── ARTICLE CARDS ── */
+    /* ── FEATURED CARD (first article, large) ── */
+    .featured-card {
+      display: block;
+      text-decoration: none;
+      color: inherit;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      margin-bottom: 1px;
+      position: relative;
+      transition: background 0.2s;
+    }
+    .featured-card:hover { background: var(--surface-hover); }
+
+    .featured-card::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 3px;
+      background: var(--accent);
+      transform: scaleY(0);
+      transform-origin: bottom;
+      transition: transform 0.25s ease;
+      z-index: 2;
+    }
+    .featured-card:hover::before { transform: scaleY(1); }
+
+    .featured-img {
+      width: 100%;
+      height: 320px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .featured-body {
+      padding: 2rem;
+    }
+
+    .featured-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.6rem;
+    }
+
+    .featured-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      line-height: 1.25;
+      margin-bottom: 0.75rem;
+      transition: color 0.2s;
+    }
+    .featured-card:hover .featured-title { color: var(--accent); }
+
+    .featured-preview {
+      font-size: 0.95rem;
+      color: var(--muted);
+      line-height: 1.75;
+      max-width: 680px;
+    }
+
+    .featured-meta {
+      margin-top: 1rem;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--muted);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* ── ARTICLE GRID ── */
     .articles {
       display: grid;
+      grid-template-columns: 1fr 1fr;
       gap: 1px;
       background: var(--border);
       border: 1px solid var(--border);
     }
 
     .article-card {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 1.5rem;
-      align-items: start;
-      background: var(--surface);
-      padding: 1.75rem 2rem;
+      display: flex;
+      flex-direction: column;
       text-decoration: none;
       color: inherit;
+      background: var(--surface);
       transition: background 0.2s;
       position: relative;
       overflow: hidden;
     }
 
-    .card-thumb {
-  width: 100%;
-  height: 180px;
-  object-fit: cover;
-  display: block;
-  grid-column: 1 / -1;
-}
     .article-card::before {
       content: '';
       position: absolute;
-      left: 0;
-      top: 0;
-      bottom: 0;
+      left: 0; top: 0; bottom: 0;
       width: 2px;
       background: var(--accent);
       transform: scaleY(0);
       transform-origin: bottom;
       transition: transform 0.25s ease;
+      z-index: 2;
+    }
+    .article-card:hover { background: var(--surface-hover); }
+    .article-card:hover::before { transform: scaleY(1); }
+
+    .card-thumb {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      display: block;
+      flex-shrink: 0;
     }
 
-    .article-card:hover {
-      background: var(--surface-hover);
+    .card-body {
+      padding: 1.25rem 1.5rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
     }
-    .article-card:hover::before {
-      transform: scaleY(1);
-    }
-
-    .card-body { min-width: 0; }
 
     .card-tags {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.4rem;
-      margin-bottom: 0.75rem;
+      gap: 0.35rem;
+      margin-bottom: 0.6rem;
     }
 
     .tag {
       font-family: 'Space Mono', monospace;
-      font-size: 0.6rem;
-      letter-spacing: 0.12em;
+      font-size: 0.58rem;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
-      padding: 0.2rem 0.55rem;
+      padding: 0.18rem 0.5rem;
       background: var(--tag-bg);
       color: var(--tag-text);
       border: 1px solid rgba(0,168,204,0.2);
     }
 
     .card-title {
-      font-size: 1.1rem;
+      font-size: 0.95rem;
       font-weight: 600;
-      line-height: 1.35;
-      margin-bottom: 0.5rem;
+      line-height: 1.4;
       color: var(--text);
       transition: color 0.2s;
+      flex: 1;
     }
     .article-card:hover .card-title { color: var(--accent); }
 
-    .card-preview {
-      font-size: 0.9rem;
-      color: var(--muted);
-      line-height: 1.7;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-
     .card-meta {
       font-family: 'Space Mono', monospace;
-      font-size: 0.65rem;
+      font-size: 0.6rem;
       color: var(--muted);
-      white-space: nowrap;
-      padding-top: 0.2rem;
-      text-align: right;
-      flex-shrink: 0;
+      margin-top: 0.85rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
     .card-arrow {
-      margin-top: 0.4rem;
       color: var(--accent);
       opacity: 0;
       transition: opacity 0.2s, transform 0.2s;
-      display: block;
-      text-align: right;
-      font-size: 1.1rem;
+      font-size: 1rem;
     }
     .article-card:hover .card-arrow {
       opacity: 1;
@@ -345,17 +421,17 @@
     }
     footer span { color: var(--accent); }
 
-    @media (max-width: 600px) {
-      .article-card { grid-template-columns: 1fr; }
-      .card-meta { text-align: left; }
+    @media (max-width: 640px) {
+      .articles { grid-template-columns: 1fr; }
       .about-block { grid-template-columns: 1fr; }
+      .featured-img { height: 200px; }
     }
   </style>
 </head>
 <body>
 
   <header>
-    <a class="logo" href="#">CRAIG STORM</a>
+    <a class="logo" href="#">Craig Storm</a>
     <nav>
       <a href="#articles">Work</a>
       <a href="#about">About</a>
@@ -366,80 +442,165 @@
 
     <!-- HERO -->
     <section class="hero">
-      <p class="hero-eyebrow">VR Journalist &amp; Tech Reporter</p>
-      <h1>Covering the <span>future</span> of spatial computing</h1>
+      <p class="hero-eyebrow">VR Journalist &amp; Immersive Tech Reporter</p>
+      <h1>Exploring VR <span>beyond</span> gaming</h1>
       <p class="hero-bio">
-        Reporting on virtual reality, mixed reality, and the technologies reshaping how we experience the world.
-        Published at <strong>UploadVR</strong> and beyond.
+        Reporting on virtual reality, immersive fitness, spatial computing, and the ways adults are discovering VR's potential.
+        Published at <strong>UploadVR</strong>. Creator of the <strong>Next Wave XR</strong> project.
       </p>
+      <div class="hero-socials">
+        <a href="https://x.com/StormyCsVR" target="_blank" rel="noopener">X / Twitter</a>
+        <a href="https://bsky.app/profile/stormycsvr.bsky.social" target="_blank" rel="noopener">Bluesky</a>
+        <a href="https://www.threads.net/@StormyCsVR" target="_blank" rel="noopener">Threads</a>
+        <a href="https://www.nextwaveXR.com" target="_blank" rel="noopener">Next Wave XR</a>
+        <a href="https://www.uploadvr.com/writer/craigstorm/" target="_blank" rel="noopener">UploadVR Profile</a>
+      </div>
     </section>
 
     <!-- ARTICLES -->
     <section class="section" id="articles">
       <p class="section-label">Selected Work</p>
 
+      <!-- FEATURED: most recent -->
+      <a class="featured-card" href="https://www.uploadvr.com/pluto-tvs-immersive-quest-app-gets-the-atmosphere-right-but-leaves-questions/" target="_blank" rel="noopener">
+        <img class="featured-img" src="https://storage.ghost.io/c/2a/2f/2a2f38f0-4b71-407a-9c7e-18a9e2541980/content/images/size/w1024/format/webp/2026/04/Pluto-cover.png" alt="Pluto TV Immersive Quest App"/>
+        <div class="featured-body">
+          <p class="featured-label">★ Latest — Media Watching</p>
+          <p class="featured-title">Pluto TV's Immersive Quest App Gets The Atmosphere Right, But Leaves Questions</p>
+          <p class="featured-preview">Pluto TV introduced a new immersive viewing app on Meta Quest. I spent some time with it to see what it actually offers, what works, and where it comes up short.</p>
+          <div class="featured-meta">
+            <span>UploadVR &nbsp;·&nbsp; 27 April 2026</span>
+            <span style="color:var(--accent)">Read →</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- GRID -->
       <div class="articles">
 
-        <!-- CARD 1 — replace with your real articles -->
-        <a class="article-card" href="https://www.uploadvr.com/pluto-tvs-immersive-quest-app-gets-the-atmosphere-right-but-leaves-questions/" target="_blank" rel="noopener">
-  <img class="card-thumb" src="https://storage.ghost.io/c/2a/2f/2a2f38f0-4b71-407a-9c7e-18a9e2541980/content/images/size/w1024/format/webp/2026/04/Pluto-cover.png" alt="Pluto TV article thumbnail"/>
-  <div class="card-body">
-    <div class="card-tags">
-      <span class="tag">Feature</span>
-      <span class="tag">Meta Quest</span>
-    </div>
-    <p class="card-title">Pluto TV's Immersive Quest App Gets The Atmosphere Right, But Leaves Questions</p>
-    <p class="card-preview">Pluto TV introduced a new immersive viewing app on Meta Quest. I spent some time with it to see what it actually offers, what works, and where it comes up short.</p>
-  </div>
-  <div class="card-meta">
-    UploadVR<br/>Apr 2026
-    <span class="card-arrow">→</span>
-  </div>
-</a>
-        <!-- CARD 2 -->
         <a class="article-card" href="https://www.uploadvr.com/the-best-vr-fitness-apps-that-dont-require-a-subscription/" target="_blank" rel="noopener">
+          <img class="card-thumb" src="https://storage.ghost.io/c/2a/2f/2a2f38f0-4b71-407a-9c7e-18a9e2541980/content/images/size/w1024/format/webp/2026/04/IMG_0690.jpg" alt="VR Fitness Apps"/>
           <div class="card-body">
-            <div class="card-tags">
-              <span class="tag">VR Fitness</span>
-              <span class="tag">Meta Quest</span>
-            </div>
-            <p class="card-title">Another Article Headline Goes Here</p>
-            <p class="card-preview">Replace this with a short excerpt or summary of your article. Keep it to a sentence or two — just enough to hook the reader.</p>
-          </div>
-          <div class="card-meta">
-            UploadVR<br/>Mar 2026
-            <span class="card-arrow">→</span>
+            <div class="card-tags"><span class="tag">Fitness</span></div>
+            <p class="card-title">4 Lesser-Known VR Fitness Apps That Don't Require A Subscription</p>
+            <div class="card-meta"><span>Apr 2026</span><span class="card-arrow">→</span></div>
           </div>
         </a>
 
-        <!-- CARD 3 -->
-        <a class="article-card" href="https://uploadvr.com/your-article-url-here" target="_blank" rel="noopener">
+        <a class="article-card" href="https://www.uploadvr.com/directv-lists-live-tv-streaming-app-for-meta-quest-ahead-of-spring-2026-launch/" target="_blank" rel="noopener">
+          <img class="card-thumb" src="https://storage.ghost.io/c/2a/2f/2a2f38f0-4b71-407a-9c7e-18a9e2541980/content/images/size/w1024/format/webp/2026/04/DIRECTV-cover.png" alt="DIRECTV Quest App" onerror="this.style.height='60px';this.style.background='#111118'"/>
           <div class="card-body">
-            <div class="card-tags">
-              <span class="tag">Feature</span>
-              <span class="tag">VR Gaming</span>
-            </div>
-            <p class="card-title">A Third Article Headline Example Here</p>
-            <p class="card-preview">Two sentences of preview text about this article. This gives visitors enough context to decide if they want to click through and read the full piece.</p>
-          </div>
-          <div class="card-meta">
-            UploadVR<br/>Feb 2026
-            <span class="card-arrow">→</span>
+            <div class="card-tags"><span class="tag">Media Watching</span><span class="tag">Meta Quest</span></div>
+            <p class="card-title">DIRECTV Lists Live TV Streaming App For Meta Quest Ahead Of Spring 2026 Launch</p>
+            <div class="card-meta"><span>Apr 2026</span><span class="card-arrow">→</span></div>
           </div>
         </a>
 
-        <!-- CARD 4 — duplicate this block to add more articles -->
-        <a class="article-card" href="https://uploadvr.com/your-article-url-here" target="_blank" rel="noopener">
+        <a class="article-card" href="https://www.uploadvr.com/fitxr-builds-flow-studio-as-vr-fitness-users-look-for-whats-next/" target="_blank" rel="noopener">
+          <img class="card-thumb" src="https://www.uploadvr.com/content/images/size/w1024/format/webp/2026/04/35998.jpg" alt="FitXR Flow Studio"/>
           <div class="card-body">
-            <div class="card-tags">
-              <span class="tag">Interview</span>
-            </div>
-            <p class="card-title">Fourth Article Headline Example</p>
-            <p class="card-preview">Short preview text here. Replace with your actual excerpt or lede from the piece.</p>
+            <div class="card-tags"><span class="tag">Fitness</span></div>
+            <p class="card-title">FitXR Builds Flow Studio As VR Fitness Users Look For What's Next</p>
+            <div class="card-meta"><span>Apr 2026</span><span class="card-arrow">→</span></div>
           </div>
-          <div class="card-meta">
-            UploadVR<br/>Jan 2026
-            <span class="card-arrow">→</span>
+        </a>
+
+        <a class="article-card" href="https://www.uploadvr.com/beat-the-beats-finds-its-groove-between-rhythm-and-fitness/" target="_blank" rel="noopener">
+          <img class="card-thumb" src="https://storage.ghost.io/c/2a/2f/2a2f38f0-4b71-407a-9c7e-18a9e2541980/content/images/size/w1024/format/webp/2026/03/Agility-1.png" alt="Beat The Beats"/>
+          <div class="card-body">
+            <div class="card-tags"><span class="tag">VR Gaming</span><span class="tag">Fitness</span></div>
+            <p class="card-title">Beat The Beats Finds Its Groove Between Rhythm and Fitness</p>
+            <div class="card-meta"><span>Mar 2026</span><span class="card-arrow">→</span></div>
+          </div>
+        </a>
+
+        <a class="article-card" href="https://www.uploadvr.com/the-thrill-of-the-fight-2-turned-vr-boxing-into-a-live-spectator-event/" target="_blank" rel="noopener">
+          <img class="card-thumb" src="https://www.uploadvr.com/content/images/size/w1024/format/webp/2026/03/GGL_VRBoxing_DeMoor_Gillie-CROPPED.jpg" alt="Thrill of the Fight 2"/>
+          <div class="card-body">
+            <div class="card-tags"><span class="tag">VR Esports</span></div>
+            <p class="card-title">Thrill Of The Fight 2 VR Boxing Turned Into Live Spectator Event</p>
+            <div class="card-meta"><span>Mar 2026</span><span class="card-arrow">→</span></div>
+          </div>
+        </a>
+
+        <a class="article-card" href="https://www.uploadvr.com/the-best-quest-3-soft-head-straps-for-reclined-lying-down-use/" target="_blank" rel="noopener">
+          <img class="card-thumb" src="https://www.uploadvr.com/content/images/size/w1024/format/webp/2026/02/IMG_9635-1.jpeg" alt="Quest 3 Head Straps"/>
+          <div class="card-body">
+            <div class="card-tags"><span class="tag">Headsets &amp; Tech</span></div>
+            <p class="card-title">The Best Quest 3 Soft Head Straps For Reclined &amp; Lying Down Use</p>
+            <div class="card-meta"><span>Feb 2026</span><span class="card-arrow">→</span></div>
+          </div>
+        </a>
+
+        <a class="article-card" href="https://www.uploadvr.com/the-lakers-games-apple-immersive/" target="_blank" rel="noopener">
+          <img class="card-thumb" src="https://storage.ghost.io/c/2a/2f/2a2f38f0-4b71-407a-9c7e-18a9e2541980/content/images/size/w1024/format/webp/2026/01/Apple-Immersive-Video-Spectrum-SportsNet-app.jpg" alt="Lakers Apple Immersive"/>
+          <div class="card-body">
+            <div class="card-tags"><span class="tag">Immersive Video</span><span class="tag">Live Sports</span></div>
+            <p class="card-title">Attending Lakers Games In Apple Immersive Plays To VR's Strengths</p>
+            <div class="card-meta"><span>Jan 2026</span><span class="card-arrow">→</span></div>
+          </div>
+        </a>
+
+        <a class="article-card" href="https://www.uploadvr.com/vr-fitness-supernatural-alternatives/" target="_blank" rel="noopener">
+          <img class="card-thumb" src="https://storage.ghost.io/c/2a/2f/2a2f38f0-4b71-407a-9c7e-18a9e2541980/content/images/size/w1024/format/webp/2026/01/Virtual-Reality-Workouts--1-.png" alt="Supernatural VR Fitness"/>
+          <div class="card-body">
+            <div class="card-tags"><span class="tag">Fitness</span></div>
+            <p class="card-title">Supernatural's Uncertain Future Leaves VR Fitness Users Looking For Options</p>
+            <div class="card-meta"><span>Jan 2026</span><span class="card-arrow">→</span></div>
+          </div>
+        </a>
+
+        <a class="article-card" href="https://www.uploadvr.com/dual-knit-band-quest-3-mod/" target="_blank" rel="noopener">
+          <img class="card-thumb" src="https://storage.ghost.io/c/2a/2f/2a2f38f0-4b71-407a-9c7e-18a9e2541980/content/images/size/w1024/format/webp/2026/01/Dual-Knit-Band-cover.jpg" alt="Dual Knit Band" onerror="this.style.height='60px';this.style.background='#111118'"/>
+          <div class="card-body">
+            <div class="card-tags"><span class="tag">Editorial</span></div>
+            <p class="card-title">Dual Knit Band Quest 3 Mod Balances Meta With Apple</p>
+            <div class="card-meta"><span>Jan 2026</span><span class="card-arrow">→</span></div>
+          </div>
+        </a>
+
+        <a class="article-card" href="https://www.uploadvr.com/titanic-echoes-from-the-past-review/" target="_blank" rel="noopener">
+          <img class="card-thumb" src="https://storage.ghost.io/c/2a/2f/2a2f38f0-4b71-407a-9c7e-18a9e2541980/content/images/size/w1024/format/webp/2025/12/Titanic-cover.jpg" alt="Titanic VR Experience" onerror="this.style.height='60px';this.style.background='#111118'"/>
+          <div class="card-body">
+            <div class="card-tags"><span class="tag">VR Experiences</span></div>
+            <p class="card-title">Titanic: Echoes From The Past Is A Memorable Free-Roam VR Experience In New York</p>
+            <div class="card-meta"><span>Dec 2025</span><span class="card-arrow">→</span></div>
+          </div>
+        </a>
+
+        <a class="article-card" href="https://www.uploadvr.com/the-vr-retail-experience-needs-a-hard-reboot/" target="_blank" rel="noopener">
+          <img class="card-thumb" src="https://storage.ghost.io/c/2a/2f/2a2f38f0-4b71-407a-9c7e-18a9e2541980/content/images/size/w1024/format/webp/2025/08/VR-retail-cover.jpg" alt="VR Retail" onerror="this.style.height='60px';this.style.background='#111118'"/>
+          <div class="card-body">
+            <div class="card-tags"><span class="tag">Editorial</span></div>
+            <p class="card-title">The VR Retail Experience Needs A Hard Reboot</p>
+            <div class="card-meta"><span>Aug 2025</span><span class="card-arrow">→</span></div>
+          </div>
+        </a>
+
+        <a class="article-card" href="https://www.uploadvr.com/spatial-phone-iphone-android-use-vr/" target="_blank" rel="noopener">
+          <img class="card-thumb" src="https://www.uploadvr.com/content/images/size/w1024/format/webp/2025/08/Screenshot-2025-08-12-at-12.32.26-PM.png" alt="Spatial Phone VR"/>
+          <div class="card-body">
+            <div class="card-tags"><span class="tag">VR Apps</span></div>
+            <p class="card-title">Spatial Phone Lets You Use Your iPhone Or Android While Immersed On Quest</p>
+            <div class="card-meta"><span>Aug 2025</span><span class="card-arrow">→</span></div>
+          </div>
+        </a>
+
+        <a class="article-card" href="https://www.uploadvr.com/funfitland-hands-on-quest/" target="_blank" rel="noopener">
+          <img class="card-thumb" src="https://storage.ghost.io/c/2a/2f/2a2f38f0-4b71-407a-9c7e-18a9e2541980/content/images/size/w1024/format/webp/2025/06/FunFitLand-cover.jpg" alt="FunFitLand" onerror="this.style.height='60px';this.style.background='#111118'"/>
+          <div class="card-body">
+            <div class="card-tags"><span class="tag">Fitness</span><span class="tag">Mixed Reality</span></div>
+            <p class="card-title">FunFitLand Is A Compelling Workout On Quest With Mixed Reality &amp; Hand Tracking</p>
+            <div class="card-meta"><span>Jun 2025</span><span class="card-arrow">→</span></div>
+          </div>
+        </a>
+
+        <a class="article-card" href="https://www.uploadvr.com/batman-arkham-shadow-city-tour/" target="_blank" rel="noopener">
+          <img class="card-thumb" src="https://storage.ghost.io/c/2a/2f/2a2f38f0-4b71-407a-9c7e-18a9e2541980/content/images/size/w1024/format/webp/2024/10/Batman-cover.jpg" alt="Batman Arkham Shadow" onerror="this.style.height='60px';this.style.background='#111118'"/>
+          <div class="card-body">
+            <div class="card-tags"><span class="tag">VR Gaming</span><span class="tag">Meta Quest</span></div>
+            <p class="card-title">Meta Is Demoing Batman: Arkham Shadow In Public Spaces In US &amp; Canada</p>
+            <div class="card-meta"><span>Oct 2024</span><span class="card-arrow">→</span></div>
           </div>
         </a>
 
@@ -450,14 +611,16 @@
     <section class="section" id="about">
       <p class="section-label">About</p>
       <div class="about-block">
-        <div class="about-avatar">YN</div>
+        <div class="about-avatar">CS</div>
         <div class="about-text">
-          <p>Craig Storm is a VR writer, immersive technology advocate, and founder of Next Wave XR – an independent thought leadership initiative exploring the future of extended reality. Based in New Jersey, he focuses on how adult users are adopting XR for wellness, productivity, and practical applications beyond gaming.</p>
-          <p>You can also mention the outlets you've written for, any awards or notable work, or your background before journalism.</p>
+          <p>Craig Storm is a VR writer, immersive fitness advocate, and Next Wave XR project creator. He explores Virtual Reality from the perspective of adult users discovering VR's potential beyond gaming.</p>
+          <p>Published at UploadVR, covering media, fitness, hardware, and the broader cultural shift around spatial computing.</p>
           <div class="about-links">
-            <a href="https://uploadvr.com" target="_blank">UploadVR Profile</a>
-            <a href="mailto:you@email.com">Email</a>
-            <a href="https://twitter.com/yourhandle" target="_blank">Twitter / X</a>
+            <a href="https://www.uploadvr.com/writer/craigstorm/" target="_blank">UploadVR</a>
+            <a href="https://www.nextwaveXR.com" target="_blank">Next Wave XR</a>
+            <a href="https://x.com/StormyCsVR" target="_blank">X / Twitter</a>
+            <a href="https://bsky.app/profile/stormycsvr.bsky.social" target="_blank">Bluesky</a>
+            <a href="https://www.threads.net/@StormyCsVR" target="_blank">Threads</a>
           </div>
         </div>
       </div>
@@ -466,7 +629,7 @@
   </main>
 
   <footer>
-    <p>© 2026 <span>CRAIG STORM</span> — VR Journalist</p>
+    <p>© 2026 <span>Craig Storm</span> — VR Journalist</p>
   </footer>
 
 </body>
